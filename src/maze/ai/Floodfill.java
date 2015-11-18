@@ -9,7 +9,7 @@ import maze.model.MazeCell;
 import maze.model.MazeModel;
 import maze.model.RobotModel;
 
-//add new things
+//add new things again
 /**
  * A maze solving algorithm that does a best path search after each step.
  */
@@ -51,6 +51,7 @@ public class Floodfill extends RobotBase
          distance = new int[size.width][size.height];
          explored = new boolean[size.width][size.height];
       }
+      //initialize cells with distance value of 1024
       for (int i = 0; i < size.getWidth(); i++)
       {
          for (int j = 0; j < size.getHeight(); j++)
@@ -73,6 +74,7 @@ public class Floodfill extends RobotBase
       RobotStep next;
       Direction nextDirection;
       Direction currentDirection = robotLocation.getDirection();
+      
       if (moveQueue.isEmpty())
       {
          if (getExplored() == false)
@@ -90,8 +92,10 @@ public class Floodfill extends RobotBase
             goal = !goal;
             floodfill();
          }
+         //what next move should be?
          nextDirection = getBestDirection();
          turbo = getNeighborExplored(nextDirection);
+         //if the same direction, move forward
          if (nextDirection == currentDirection)
          {
             next = RobotStep.MoveForward;
@@ -126,7 +130,7 @@ public class Floodfill extends RobotBase
     */
    private boolean getNeighborExplored(Direction direction)
    {
-	   //add something
+	  
       MazeCell neighbor;
       MazeCell here = robotLocation.getCurrentLocation();
       Dimension size = maze.getSize();
@@ -251,7 +255,7 @@ public class Floodfill extends RobotBase
          bestDirection = Direction.South;
          bestDistance = getNeighborDistance(here, bestDirection);
       }
-
+      //cann't find any direction to go, this case happens when the all the neighboring cells' distance is greater than current cell's 
       if (bestDirection == null)
       {
          floodfill();
@@ -311,14 +315,25 @@ public class Floodfill extends RobotBase
       distance[here.getX() - 1][here.getY() - 1] = value;
    }
 
+   // flood fill algorithm 
+   // Basics:
+   // s1: add a cell into an empty queue
+   // s2: if the queue is no empty:
+   //     s3: dequeue a cell
+   //     s4: add the adjacent (accessible) cells into the queue
+   //     s5: mark the dequeued cell as visited
+   // return to s2
+   
    private void floodfill()
-   {
+   {  
+	  //size = (16,16)
       Dimension size = maze.getSize();
+      //queue would contain cells
       Vector<MazeCell> queue = new Vector<MazeCell>();
       MazeCell cell;
       int currentDistance;
       boolean speedy;
-
+      //initial distance for each cell is 1024 (USELESS)
       for (int i = 1; i <= size.width; i++)
       {
          for (int j = 1; j <= size.height; j++)
@@ -327,6 +342,8 @@ public class Floodfill extends RobotBase
          }
       }
 
+      //if it's from start to centre
+      // s1: add cell into queue
       if (goal == TO_START)
       {
          cell = MazeCell.valueOf(1, size.height);
@@ -359,11 +376,13 @@ public class Floodfill extends RobotBase
             speedy = false;
          }
       }
-
+      // s2: queue is not empty
       while (queue.isEmpty() == false)
       {
+    	  //s3: dequeue
          cell = queue.get(0);
          queue.remove(0);
+         //get the current distance of this cell
          currentDistance = getDistance(cell);
 
          //Check to see if accessible
