@@ -125,6 +125,7 @@ public class Floodfill extends RobotBase
     */
    private boolean getNeighborExplored(Direction direction)
    {
+	   //add something
       MazeCell neighbor;
       MazeCell here = robotLocation.getCurrentLocation();
       Dimension size = maze.getSize();
