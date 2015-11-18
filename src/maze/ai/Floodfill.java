@@ -9,6 +9,7 @@ import maze.model.MazeCell;
 import maze.model.MazeModel;
 import maze.model.RobotModel;
 
+//add new things
 /**
  * A maze solving algorithm that does a best path search after each step.
  */
